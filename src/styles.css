@@ -471,17 +471,22 @@ footer a {
 	padding-bottom: 30px;
 }
 
-.work-back-link {
-	display: inline-block;
+.category-pagination {
+	display: flex;
+	justify-content: space-between;
+	gap: 20px;
 	margin-bottom: clamp(30px, 5vw, 50px);
-	color: var(--color-orange);
 	font-family: var(--font-sans);
 	font-size: 15px;
 	font-weight: 700;
+}
+
+.category-pagination a {
+	color: var(--color-orange);
 	text-decoration: none;
 }
 
-.work-back-link:hover {
+.category-pagination a:hover {
 	color: var(--color-brown);
 }
 
@@ -543,6 +548,23 @@ footer a {
 	min-width: 0;
 }
 
+.project-card-link {
+	display: block;
+	color: inherit;
+	text-decoration: none;
+}
+
+.project-card-link:hover h2 {
+	text-decoration: underline;
+	text-decoration-color: var(--color-orange);
+}
+
+.project-card-link:focus-visible {
+	border-radius: 2px;
+	outline: 2px solid var(--color-orange);
+	outline-offset: 5px;
+}
+
 .project-image-placeholder {
 	display: grid;
 	width: 100%;
@@ -585,11 +607,20 @@ footer a {
 	color: var(--color-orange);
 }
 
+.project-link-label {
+	display: inline-block;
+	margin-top: 10px;
+	color: var(--color-orange);
+	font-family: var(--font-sans);
+	font-size: 14px;
+	font-weight: 700;
+}
+
 .work-heading {
+	position: relative;
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
-	gap: 25px;
+	justify-content: center;
 	margin-bottom: 25px;
 }
 
@@ -601,6 +632,8 @@ footer a {
 }
 
 .carousel-controls {
+	position: absolute;
+	right: 0;
 	display: flex;
 	gap: 10px;
 }
@@ -631,36 +664,64 @@ footer a {
 }
 
 .work-carousel {
+	position: relative;
 	overflow: hidden;
+	padding: 15px 0;
 }
 
-.work-carousel .work-card {
-	display: block;
-	width: calc((100% - 45px) / 3);
-	margin: 5px auto 15px;
+.work-carousel-track {
+	display: grid;
+}
+
+.work-slide {
+	grid-area: 1 / 1;
+	width: 42%;
+	place-self: center;
+	opacity: 0;
+	pointer-events: none;
+	transform: translateX(0) scale(.7);
+	transition: transform 450ms ease, opacity 450ms ease;
+}
+
+.work-slide.is-active,
+.work-slide.is-previous,
+.work-slide.is-next {
+	pointer-events: auto;
+}
+
+.work-slide.is-active {
+	z-index: 2;
+	opacity: 1;
+	transform: translateX(0) scale(1);
+}
+
+.work-slide.is-previous {
+	z-index: 1;
+	opacity: .78;
+	transform: translateX(-110%) scale(.78);
+}
+
+.work-slide.is-next {
+	z-index: 1;
+	opacity: .78;
+	transform: translateX(110%) scale(.78);
+}
+
+.work-slide.is-hidden {
+	visibility: hidden;
 }
 
 .work-card {
+	display: block;
 	color: inherit;
 	text-decoration: none;
 }
 
-.work-placeholder {
-	display: grid;
+.work-poster {
+	display: block;
 	width: 100%;
-	aspect-ratio: 4 / 3;
-	place-items: center;
+	height: auto;
 	background: var(--color-yellow);
-	color: var(--color-brown);
-	font-family: var(--font-serif);
-	font-size: clamp(20px, 2.5vw, 30px);
-	text-transform: lowercase;
-	transition: background-color 160ms ease, color 160ms ease;
-}
-
-.work-card:hover .work-placeholder {
-	background: var(--color-orange);
-	color: var(--color-cream);
 }
 
 .contact-page p.email-intro {
@@ -756,6 +817,7 @@ footer a {
 
 	.site-title {
 		font-size: clamp(35px, 10vw, 65px);
+		text-shadow: 2px 2px 0 var(--color-orange);
 	}
 
 	.site-menu {
@@ -764,9 +826,11 @@ footer a {
 	}
 
 	.site-nav {
-		gap: 5px 10px;
+		flex-wrap: nowrap;
+		gap: 4px 5px;
 		padding-left: 5px;
-		font-size: 15px;
+		font-size: clamp(10px, 3.4vw, 13px);
+		white-space: nowrap;
 	}
 
 	.work-page main {
@@ -854,7 +918,20 @@ footer a {
 
 @media (max-width: 560px) {
 	.work-heading {
-		align-items: flex-end;
+		align-items: center;
+	}
+
+	.work-heading h1 {
+		font-size: clamp(22px, 6vw, 28px);
+	}
+
+	.carousel-controls {
+		gap: 6px;
+	}
+
+	.carousel-button {
+		width: 42px;
+		height: 42px;
 	}
 
 	.project-grid {
@@ -878,8 +955,16 @@ footer a {
 		max-width: 80px;
 	}
 
-	.work-carousel .work-card {
-		width: 85%;
+	.work-slide {
+		width: 58%;
+	}
+
+	.work-slide.is-previous {
+		transform: translateX(-100%) scale(.78);
+	}
+
+	.work-slide.is-next {
+		transform: translateX(100%) scale(.78);
 	}
 
 	.contact-page form {
@@ -889,5 +974,22 @@ footer a {
 
 	.contact-page textarea {
 		grid-column: auto;
+	}
+}
+
+@media (max-width: 360px) {
+	.work-heading {
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.carousel-controls {
+		position: static;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.work-slide {
+		transition: none;
 	}
 }
