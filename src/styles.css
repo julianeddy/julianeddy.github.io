@@ -363,6 +363,30 @@ footer a {
 	background: var(--color-brown);
 }
 
+.home-contact button:disabled,
+.contact-page button:disabled {
+	cursor: wait;
+	opacity: 0.65;
+}
+
+.form-status {
+	margin: 15px 0 0;
+	font-size: 15px;
+	line-height: 1.5;
+}
+
+.form-status[data-state="sending"] {
+	color: var(--color-brown);
+}
+
+.form-status[data-state="success"] {
+	color: #28643a;
+}
+
+.form-status[data-state="error"] {
+	color: #9b3028;
+}
+
 .contact-page main {
 	width: min(calc(100% - 50px), 798px);
 	margin: clamp(40px, 5vh, 60px) auto 0;
